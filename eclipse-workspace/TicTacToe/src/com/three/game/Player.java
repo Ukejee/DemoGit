@@ -2,6 +2,8 @@ package com.three.game;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import javax.swing.JButton;
+
 public class Player {
 
 	String name;
@@ -15,15 +17,38 @@ public class Player {
 		
 	}
 	
-	public int takeTurn() throws InputMismatchException {
+	public int takeTurn(Board board) {
 		
-		System.out.println("Enter slot number " + name + ": ");
+		//loop until user gives us a valid input
 		Scanner in = new Scanner(System.in);
-		int userSlot = in.nextInt();
-		return userSlot;
+		int userSlot = 0;
+		System.out.println(name + " Your turn");
 		
+		boolean inputNotValid = true;
+		while(inputNotValid) {
+			try {
+				System.out.println(name + " enter slot number: ");
+				userSlot = in.nextInt();
+				//in.nextLine();
+				if(board.checkSlotValidity(userSlot)) {
+					break;
+				}
+				
+			}catch(InvalidSlotException e) {
+				System.out.println(e.getMessage());
+			}catch(InputMismatchException e) {
+				System.out.println("Characters are not allowed !!! "
+						+ "Please enter a valid number between 1 - 9");
+				in.nextLine();
+				
+			}catch(Exception e) {
+				
+				System.out.println("Please enter a valid number between 1 - 9");
+			}
+			
+		}
+		
+		return userSlot;
 	}
-	
-	
 	
 }

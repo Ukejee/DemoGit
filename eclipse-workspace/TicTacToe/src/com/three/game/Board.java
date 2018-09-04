@@ -3,110 +3,101 @@ package com.three.game;
 public class Board {
 
 	String board [] = new String[9];
-	boolean GameWon = false;
+	boolean gameWon = false;
 	
-	
-	public void createBoard() {
+	/**
+	 * game has ended either when all the tiles have been filled or a user has won 
+	 * @return
+	 */
+	public boolean hasGameEnded() {
 		
-		System.out.println(board[0] + " | " + board[1] + " | " + board[2]);
-		System.out.println("----------");
-		System.out.println(board[3] + " | " + board[4] + " | " + board[5]);
-		System.out.println("----------");
-		System.out.println(board[6] + " | " + board[7] + " | " + board[8]);
+		//someone has won
+		if(gameWon) {
+			return true;
+		}
 		
-		
-		
+		//check if all the tiles are filled
+		boolean doesBoardContainEmptySpace = false;
+		for(int i = 0 ; i < board.length; i++) {
+			String value = board[i];
+			if(value.trim().equalsIgnoreCase("")) {
+				doesBoardContainEmptySpace = true;
+				break;
+			}
+		}
+		//if there is no empty space
+		if(!doesBoardContainEmptySpace) {
+			return true;
+		}
+		return false;
 	}
+	
+	public void clearScreen() {
+		for(int i = 0; i < 20; i++) {
+			System.out.println("\n");
+		}
+	}
+
 	
 	public void initializeBoard() {
 		
 		for(int i = 0; i < 9; i++) {
 			
-			board[i] = " ";
+			board[i] =  "";
 			
 		}
+	  // ui.initializeUI();
+	}
+
+	
+	public String checkWinnerV2(Player p1, Player p2) {
 		
+		String[] winningCombinations = {"012", "345", "678", "036", "147", "258", "048", "246"};
+		String playerWhoWon = null;
+		
+		for(String combination : winningCombinations) {
+			//if a combination has the same value in the array a winner has been established
+			
+			int x = Integer.valueOf(combination.substring(0,1));
+			int y = Integer.valueOf(combination.substring(1,2));
+			int z = Integer.valueOf(combination.substring(2,3));
+			
+			//if it is not empty
+			if(!board[x].trim().equals("")) {
+				//if the value is equal to the other 2 fields in the winning combo
+				if(board[x].trim().equalsIgnoreCase(board[y].trim()) && 
+						board[x].trim().equalsIgnoreCase(board[z].trim())){
+					
+				    playerWhoWon = (p1.signature.equalsIgnoreCase(board[x].trim())) ? p1.name : p2.name;
+					//break out of loop cause we have found a winner
+					System.out.println(playerWhoWon + " is the winner!!!!!");
+					gameWon = true;
+					break;
+				}
+			}
+		}
+		
+		return playerWhoWon;
 	}
 	
-	public void checkWinner() {
-		
-		String row1 = board[0] + board[1] + board[2];
-		String row2 = board[3] + board[4] + board[5];
-		String row3 = board[6] + board[7] + board[8];
-		String column1 = board[0] + board[3] + board[6];
-		String column2 = board[1] + board[4] + board[7];
-		String column3 = board[2] + board[5] + board[8];
-		String diagonal1 = board[0] + board[4] + board[8];
-		String diagonal2 = board[2] + board[4] + board[6];
-		
-		if(row1.equals("XXX")) {
-			System.out.println("Player 1 is the winner!!!!!");
-			GameWon = true;
-		}
-		else if(row2.equals("XXX")) {
-			System.out.println("Player 1 is the winner!!!!!");
-			GameWon = true;
-		}
-		else if(row3.equals("XXX")) {
-			System.out.println("Player 1 is the winner!!!!!");
-			GameWon = true;
-		}
-		else if(column1.equals("XXX")) {
-			System.out.println("Player 1 is the winner!!!!!");
-			GameWon = true;
-		}
-		else if(column2.equals("XXX")) {
-			System.out.println("Player 1 is the winner!!!!!");
-			GameWon = true;
-		}
-		else if(column3.equals("XXX")) {
-			System.out.println("Player 1 is the winner!!!!!");
-			GameWon = true;
-		}
-		else if(diagonal1.equals("XXX")) {
-			System.out.println("Player 1 is the winner!!!!!");
-			GameWon = true;
-		}
-		else if(diagonal2.equals("XXX")) {
-			System.out.println("Player 1 is the winner!!!!!");
-			GameWon = true;
-		}
-		else if(row1.equals("OOO")) {
-			System.out.println("Player 2 is the winner!!!!!");
-			GameWon = true;
-		}
-		else if(row2.equals("OOO")) {
-			System.out.println("Player 2 is the winner!!!!!");
-			GameWon = true;
-		}
-		else if(row3.equals("OOO")) {
-			System.out.println("Player 2 is the winner!!!!!");
-			GameWon = true;
-		}
-		else if(column1.equals("OOO")) {
-			System.out.println("Player 2 is the winner!!!!!");
-			GameWon = true;
-		}
-		else if(column2.equals("OOO")) {
-			System.out.println("Player 2 is the winner!!!!!");
-			GameWon = true;
-		}
-		else if(column3.equals("OOO")) {
-			System.out.println("Player 2 is the winner!!!!!");
-			GameWon = true;
-		}
-		else if(diagonal1.equals("OOO")) {
-			System.out.println("Player 2 is the winner!!!!!");
-			GameWon = true;
-		}
-		else if(diagonal2.equals("OOO")) {
-			System.out.println("Player 2 is the winner!!!!!");
-			GameWon = true;
-		}
 	
+	public boolean checkSlotValidity(int slotNo) throws InvalidSlotException {
+		//if it is in the range of 1 - board size and it has not been filled
+		if(slotNo >= 1 && slotNo <= board.length) {
+			
+			//if that slot has not been filled it is now valid 
+			if(board[slotNo - 1].trim().equals("")) {
+				return true;
+			}else {
+				throw new InvalidSlotException("Slot has already been filled, please choose another");
+			}
+		}else {
+			throw new InvalidSlotException("Invalid Slot no : " + slotNo + " slot number must be between 1 - 9");
+		}
 		
-		
+		//return false;
 	}
+	
 	
 	public void fillSlot(int slotNo, String symbol) throws ArrayIndexOutOfBoundsException {
 		
