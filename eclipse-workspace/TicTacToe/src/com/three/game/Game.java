@@ -113,19 +113,21 @@ public class Game implements GameInterface {
 		p2 = new Player("Player 2", "O",0);
 		}
 		else {
-			ui.println(p1.name + " has won "+ p1.score+" times.");
-			ui.println(p2.name + " has won "+ p2.score + " times.");	
+			System.out.println(p1.name + " has won "+ p1.score+" times.");
+			System.out.println(p2.name + " has won "+ p2.score + " times.");	
 		}
 		
 	}
 	
 	public void processPlayAgain() {
 		
+		System.out.println("begin play again");
 		ui.clearScreen();
 		ui.clearButton();
-		//ui.println(p1.name + " has won "+ p1.score+" times.");
-		//ui.println(p2.name + " has won "+ p2.score + " times.");
+		ui.println(p1.name + " has won "+ p1.score+" times.");
+		ui.println(p2.name + " has won "+ p2.score + " times.");
 		setUpNewGame();
+		
 	}
 	
 	
