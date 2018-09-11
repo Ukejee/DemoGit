@@ -21,6 +21,7 @@ public class UserInterFace extends JFrame{
 	private JPanel pan;
 	public XOButton buttons[];
 	private NGButton newGameBtn;
+	private JButton playAgainBtn;
 	private EButton exitBtn;
 	private JSplitPane sp;
 	private TextArea textArea;
@@ -32,6 +33,7 @@ public class UserInterFace extends JFrame{
 	    pan = new JPanel();
 		buttons = new XOButton[9];
 		newGameBtn = new NGButton("New Game");
+		playAgainBtn = new JButton("Play Again");
 		exitBtn = new EButton("Exit");
 	    sp = new JSplitPane();
 	    textArea = newGameBtn.getTextArea();
@@ -63,12 +65,14 @@ public class UserInterFace extends JFrame{
 		pan.setLayout(new BoxLayout(pan, BoxLayout.Y_AXIS));
 		pan.add(newGameBtn);
 		pan.add(newGameBtn.getTextArea());
+		pan.add(playAgainBtn);
 		pan.add(exitBtn);
 		add(sp);
 		setVisible(true);
 		textArea.setText("");
 		
 		newGameBtn.addActionListener(new ButtonAction(newGameBtn));
+		playAgainBtn.addActionListener(new ButtonAction(playAgainBtn));
 		exitBtn.addActionListener(new ButtonAction(exitBtn));
 		
 	}
@@ -93,11 +97,15 @@ public class UserInterFace extends JFrame{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(jbutton.getActionCommand().equalsIgnoreCase("New Game")) {
-				
-				
-			}else if(jbutton.getActionCommand().equalsIgnoreCase("exit")) {
+				gameInterface.processNewGame();
+			}
+			else if(jbutton.getActionCommand().equalsIgnoreCase("exit")) {
 				System.exit(0);
-			}else {
+			}
+			else if(jbutton.getActionCommand().equalsIgnoreCase("play again")) {
+				gameInterface.processPlayAgain();
+			}
+			else {
 				
 				System.out.println("action : " + action);
 				gameInterface.processPlayerTurn(action + 1);
@@ -108,8 +116,21 @@ public class UserInterFace extends JFrame{
 			}
 		}
 	
+	//function to write on display board
 	public void println(String message) {
 			 textArea.append("\n" + message);
+	}
+	
+	//function to clear display board
+	public void clearScreen() {
+		textArea.setText("");
+	}
+	
+	//function to clear button
+	public void clearButton() {
+		for(int i=0;i<9;i++) {
+			buttons[i].setText("");
+		}
 	}
 	
 }

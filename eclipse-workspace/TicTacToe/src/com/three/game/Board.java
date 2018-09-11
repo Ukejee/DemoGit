@@ -50,10 +50,10 @@ public class Board {
 	}
 
 	
-	public String checkWinnerV2(Player p1, Player p2) {
+	public Player checkWinnerV2(Player p1, Player p2) {
 		
 		String[] winningCombinations = {"012", "345", "678", "036", "147", "258", "048", "246"};
-		String playerWhoWon = null;
+		Player playerWhoWon = null;
 		
 		for(String combination : winningCombinations) {
 			//if a combination has the same value in the array a winner has been established
@@ -68,9 +68,10 @@ public class Board {
 				if(board[x].trim().equalsIgnoreCase(board[y].trim()) && 
 						board[x].trim().equalsIgnoreCase(board[z].trim())){
 					
-				    playerWhoWon = (p1.signature.equalsIgnoreCase(board[x].trim())) ? p1.name : p2.name;
+				    playerWhoWon = (p1.signature.equalsIgnoreCase(board[x].trim())) ? p1 : p2;
 					//break out of loop cause we have found a winner
-					System.out.println(playerWhoWon + " is the winner!!!!!");
+					System.out.println(playerWhoWon.name + " is the winner!!!!!");
+					playerWhoWon.score++;
 					gameWon = true;
 					break;
 				}
@@ -79,7 +80,6 @@ public class Board {
 		
 		return playerWhoWon;
 	}
-	
 	
 	public boolean checkSlotValidity(int slotNo) throws InvalidSlotException {
 		//if it is in the range of 1 - board size and it has not been filled

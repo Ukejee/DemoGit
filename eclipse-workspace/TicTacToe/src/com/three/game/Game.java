@@ -1,6 +1,4 @@
 package com.three.game;
-import java.util.InputMismatchException;
-
 import javax.swing.JButton;
 
 
@@ -11,6 +9,7 @@ public class Game implements GameInterface {
 	Board board;
 	UserInterFace ui;
 	boolean isPlayer1Turn = true;
+	boolean newGame = false;
 	
 	public void setupGame(){
 		
@@ -23,8 +22,8 @@ public class Game implements GameInterface {
 		ui = new UserInterFace(this);
 		
 		//create players
-		p1 = new Player("Player 1", "X");
-		p2 = new Player("Player 2", "O");
+		p1 = new Player("Player 1", "X",0);
+		p2 = new Player("Player 2", "O",0);
 
 		displayWelcomeMessage();
 		
@@ -65,7 +64,7 @@ public class Game implements GameInterface {
 				//validate board position
 				board.fillSlot(selectedSquare, getCurrentPlayer().signature);
 				ui.setButtonText(selectedSquare, getCurrentPlayer().signature);
-				String winningPlayer = board.checkWinnerV2(p1, p2);
+				Player winningPlayer = board.checkWinnerV2(p1, p2);
 				
 				if(board.hasGameEnded()) {
 					System.out.println("game has ended");
@@ -74,7 +73,7 @@ public class Game implements GameInterface {
 					if(winningPlayer == null) {
 						ui.println("Game ended in a draw");
 					}else {
-						ui.println(winningPlayer + " is the winner");
+						ui.println(winningPlayer.name + " is the winner");
 					}
 					
 					
@@ -87,12 +86,46 @@ public class Game implements GameInterface {
 				
 			}
 			
+			
 		}catch(InvalidSlotException e) {
 			ui.println(e.getMessage());
 		}
-		
-			
 	
+	}
+	
+	public void processNewGame() {
+		this.newGame = true;
+		ui.clearScreen();
+		ui.clearButton();
+		displayWelcomeMessage();
+		setUpNewGame();
+	
+	}
+	
+	public void setUpNewGame() {
+		
+		board = new Board();
+		board.initializeBoard();
+
+		//create players
+		if(newGame) {
+		p1 = new Player("Player 1", "X",0);
+		p2 = new Player("Player 2", "O",0);
+		}
+		else {
+			ui.println(p1.name + " has won "+ p1.score+" times.");
+			ui.println(p2.name + " has won "+ p2.score + " times.");	
+		}
+		
+	}
+	
+	public void processPlayAgain() {
+		
+		ui.clearScreen();
+		ui.clearButton();
+		//ui.println(p1.name + " has won "+ p1.score+" times.");
+		//ui.println(p2.name + " has won "+ p2.score + " times.");
+		setUpNewGame();
 	}
 	
 	

@@ -8,13 +8,14 @@ public class Player {
 
 	String name;
 	String signature;
+	int score;
 	int userSlot;
 	
-	public Player(String userName, String userSignature ) {
+	public Player(String userName, String userSignature, int userScore ) {
 		
 		name = userName;
 		signature = userSignature;
-		
+		score = userScore;
 	}
 	
 	public int takeTurn(Board board) {
