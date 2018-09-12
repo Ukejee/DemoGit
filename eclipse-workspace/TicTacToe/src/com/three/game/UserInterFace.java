@@ -9,20 +9,17 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
-import com.four.game.EButton;
-import com.four.game.InvalidSlotExceptionV2;
-import com.four.game.NGButton;
-import com.four.game.XOButton;
+
 
 
 public class UserInterFace extends JFrame{
 	
 	private JPanel panel;
 	private JPanel pan;
-	public XOButton buttons[];
-	private NGButton newGameBtn;
+	public JButton buttons[];
+	private NewGameButton newGameBtn;
 	private JButton playAgainBtn;
-	private EButton exitBtn;
+	private JButton exitBtn;
 	private JSplitPane sp;
 	private TextArea textArea;
 	public byte value;
@@ -31,10 +28,10 @@ public class UserInterFace extends JFrame{
 	public void initializeUI() {
 		panel = new JPanel();
 	    pan = new JPanel();
-		buttons = new XOButton[9];
-		newGameBtn = new NGButton("New Game");
+		buttons = new JButton[9];
+		newGameBtn = new NewGameButton("New Game");
 		playAgainBtn = new JButton("Play Again");
-		exitBtn = new EButton("Exit");
+		exitBtn = new JButton("Exit");
 	    sp = new JSplitPane();
 	    textArea = newGameBtn.getTextArea();
 		value = 0;
@@ -54,7 +51,7 @@ public class UserInterFace extends JFrame{
 		panel.setLayout(new GridLayout(3,3));
 		
 		for(int i=0;i<9;i++) {
-			buttons[i] = new XOButton();
+			buttons[i] = new JButton();
 			buttons[i].addActionListener(new ButtonAction(buttons[i], i));
 			panel.add(buttons[i]);
 		}
